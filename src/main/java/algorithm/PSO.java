@@ -20,12 +20,13 @@ public class PSO {
     private static double[][] V = new double[POPSIZE][DIMENSION]; // 粒子速度
     private static final double VMAX = 0.1 * (XMAX - XMIN); // 最大限制速度
     private static double VMIN = -VMAX;
+
     private static double[][] pbest = new double[POPSIZE][DIMENSION]; // 个体最优
     private static double[] gbest = new double[DIMENSION]; // 种群最优
     private static double[] fitness = new double[POPSIZE];
 
 
-    // 初始化
+    // initialization
     private static void init() {
         for (int i = 0; i < POPSIZE; i++) {
             for (int j = 0; j < DIMENSION; j++) {
@@ -42,7 +43,7 @@ public class PSO {
         gbest = X[sortedIndex[0]];
     }
 
-    //更新位置信息
+    // update location
     private static void updateX() {
         for (int i = 0; i < POPSIZE; i++) {
             for (int j = 0; j < DIMENSION; j++) {
@@ -66,7 +67,7 @@ public class PSO {
         gbest = X[sortedIndex[0]];
     }
 
-    //更新速度信息
+    // update speed
     private static void updateV() {
         Random random = new Random();
         for (int i = 0; i < POPSIZE; i++) {
@@ -83,12 +84,13 @@ public class PSO {
         }
     }
 
-    // 计算适应值
+    // calculate fitness
     private static double calFitness(double[] x) {
         return Fitness.deJong(x);
     }
 
-    // 主函数
+
+    // main function
     public static void psoMain() {
         int gen = 0;
         init();
@@ -122,6 +124,7 @@ public class PSO {
     private static double rand() {
         return Math.random();
     }
+
 
     public static void main(String[] args) {
         PSO.psoMain();

@@ -31,7 +31,7 @@ public class DE {
             for (int j = 0; j < size; j++) {
                 X[i][j] = xMin + r.nextDouble() * (xMax - xMin);
             }
-            // 计算适应值
+
             fitness[i] = calFitness(X[i]);
         }
     }
@@ -108,7 +108,7 @@ public class DE {
         return Fitness.sixHump(x);
     }
 
-    //差分进化算法 differential evolution algorithm
+    // 调用
     private static void deMain() {
         double bestValueGeneration[] = new double[maxCycle]; //每代最佳值
         double bestIndividualGeneration[][] = new double[maxCycle][size];// 每代最优个体

@@ -4,6 +4,7 @@ import java.util.Random;
 
 /**
  * Created by zhangjackie on 17/7/14.
+ * 连续数值的遗传算法
  */
 public class GA {
 
@@ -136,7 +137,6 @@ public class GA {
     }
 
     public static void main(String args[]) {
-        //System.out.println(1/Math.pow(2,1));
         GA ga = new GA();
         ga.geneticAlgo();
     }
