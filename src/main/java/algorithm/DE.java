@@ -1,6 +1,5 @@
 package algorithm;
 
-import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -16,28 +15,29 @@ public class DE {
     private static final double CR = 0.8;// 杂交的控制参数
     private static final int maxCycle = 1000; //最大迭代次数
 
-    private static double X[][] = new double[NP][size];// 个体
-    private static double XMutation[][] = new double[NP][size];
-    private static double XCrossOver[][] = new double[NP][size];
-    private static double fitness[] = new double[NP];// 适应值
-    private static double fitnessCrossOver[] = new double[NP];//经过变异交叉操作后适应值
-    private static double bestValue; //全局最优解
-    private static double[] bestIndividual = new double[size];//全局最优个体
+    private double[][] X = new double[NP][size];// 个体
+    private double[][] XMutation = new double[NP][size];
+    private double[][] XCrossOver = new double[NP][size];
+    private double[] fitness = new double[NP];// 适应值
+    private double[] fitnessCrossOver = new double[NP];//经过变异交叉操作后适应值
+
+    public double bestValue; //全局最优解
+    public double[] bestIndividual = new double[size];//全局最优个体
 
     //初始化
-    private static void init() {
+    private void init() {
         Random r = new Random();
         for (int i = 0; i < NP; i++) {
             for (int j = 0; j < size; j++) {
                 X[i][j] = xMin + r.nextDouble() * (xMax - xMin);
             }
 
-            fitness[i] = calFitness(X[i]);
+            fitness[i] = calculateFitness(X[i]);
         }
     }
 
     //变异操作
-    private static void mutation() {
+    private void mutation() {
         Random r = new Random();
         for (int i = 0; i < NP; i++) {
             int r1 = 0, r2 = 0, r3 = 0;
@@ -60,7 +60,7 @@ public class DE {
     }
 
     //边界处理
-    private static double boundary(double x, double xmax, double xmin) {
+    private double boundary(double x, double xmax, double xmin) {
         double left = 0;
         while (x > xmax || x < xmin) {
             if (x > xmax) {
@@ -76,7 +76,7 @@ public class DE {
     }
 
     //交叉操作
-    private static void crossover() {
+    private void crossover() {
         Random r = new Random();
         for (int i = 0; i < NP; i++) {
             for (int j = 0; j < size; j++) {
@@ -91,9 +91,9 @@ public class DE {
     }
 
     //选择操作
-    private static void selection() {
+    private void selection() {
         for (int i = 0; i < NP; i++) {
-            fitnessCrossOver[i] = calFitness(XCrossOver[i]);
+            fitnessCrossOver[i] = calculateFitness(XCrossOver[i]);
             if (fitnessCrossOver[i] < fitness[i]) {
                 for (int j = 0; j < size; j++) {
                     X[i][j] = XCrossOver[i][j];
@@ -104,14 +104,14 @@ public class DE {
     }
 
     //计算适应值
-    private static double calFitness(double[] x) {
+    private double calculateFitness(double[] x) {
         return Fitness.sixHump(x);
     }
 
-    // 调用
-    private static void deMain() {
-        double bestValueGeneration[] = new double[maxCycle]; //每代最佳值
-        double bestIndividualGeneration[][] = new double[maxCycle][size];// 每代最优个体
+
+    public void evolve() {
+        double[] bestValueGeneration = new double[maxCycle]; //每代最佳值
+        double[][] bestIndividualGeneration = new double[maxCycle][size];// 每代最优个体
 
         init();
 
@@ -137,9 +137,4 @@ public class DE {
     }
 
 
-    public static void main(String[] args) {
-        DE.deMain();
-        System.out.println(Arrays.toString(DE.bestIndividual));
-        System.out.println(DE.bestValue);
-    }
 }

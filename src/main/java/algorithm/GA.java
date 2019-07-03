@@ -8,7 +8,7 @@ import java.util.Random;
  */
 public class GA {
 
-    private double CalculateFitness(double XTemp[]) {
+    private double calculateFitness(double[] XTemp) {
         return Fitness.rosenBrock(XTemp);
     }
 
@@ -16,12 +16,12 @@ public class GA {
     private int selection(double[][] X) {
         double totalScore = 0;
         for (int i = 0; i < X.length; i++) {
-            totalScore += CalculateFitness(X[i]);
+            totalScore += calculateFitness(X[i]);
         }
         double slice = Math.random() * totalScore;
         double sum = 0;
         for (int i = 0; i < X.length; i++) {
-            sum += CalculateFitness(X[i]);
+            sum += calculateFitness(X[i]);
             if (sum > slice) {
                 return i;
             }
@@ -72,18 +72,17 @@ public class GA {
 
 
     //遗传算法主程序
-    public void geneticAlgo() {
+    public void evolve() {
         int NP = 20;//种群数量
         int size = 10;//个体长度
-        //double CR=0.5;// 交叉概率
+        //double CR = 0.5;// 交叉概率
         int IterMax = 1000;// 最大迭代次数
 
-        double X[][] = new double[NP][size];
-        double XCrossover[][] = new double[NP][size];
-        double XMutation[][] = new double[NP][size];
-        double fitness[] = new double[NP];
-        double Xnew[][] = new double[2 * NP][size];
-        double fitnessNew[] = new double[2 * NP];
+        double[][] x = new double[NP][size];
+        double[][]  xCrossover= new double[NP][size];
+        double[][] xMutation = new double[NP][size];
+        double[] fitness = new double[NP];
+
         Random r = new Random();
 
         double bestValue = 10000;
@@ -91,9 +90,9 @@ public class GA {
         // 初始化种群： 实数编码方式（0，1）
         for (int i = 0; i < NP; i++) {
             for (int j = 0; j < size; j++) {
-                X[i][j] = r.nextDouble();
+                x[i][j] = r.nextDouble();
             }
-            fitness[i] = CalculateFitness(X[i]);
+            fitness[i] = calculateFitness(x[i]);
             if (fitness[i] < bestValue) {
                 bestValue = fitness[i];
             }
@@ -107,25 +106,25 @@ public class GA {
 
             for (int i = 0; i < NP; i = i + 2) {
                 // 选择
-                p1 = selection(X);
-                p2 = selection(X);
+                p1 = selection(x);
+                p2 = selection(x);
                 //crossover 交叉
-                XCrossover[i] = crossover(p1, p2, X);
-                XCrossover[i + 1] = crossover(p1, p2, X);
+                xCrossover[i] = crossover(p1, p2, x);
+                xCrossover[i + 1] = crossover(p1, p2, x);
                 //mutation 变异
-                XMutation[i] = mutation(XCrossover[i]);
-                XMutation[i + 1] = mutation(XCrossover[i + 1]);
+                xMutation[i] = mutation(xCrossover[i]);
+                xMutation[i + 1] = mutation(xCrossover[i + 1]);
 
-                if (CalculateFitness(X[p1]) > CalculateFitness(XMutation[i])) {
-                    X[i] = XMutation[i];
+                if (calculateFitness(x[p1]) > calculateFitness(xMutation[i])) {
+                    x[i] = xMutation[i];
                 }
-                if (CalculateFitness(X[p2]) > CalculateFitness(XMutation[i + 1])) {
-                    X[i + 1] = XMutation[i + 1];
+                if (calculateFitness(x[p2]) > calculateFitness(xMutation[i + 1])) {
+                    x[i + 1] = xMutation[i + 1];
                 }
             }
 
             for (int i = 0; i < NP; i++) {
-                fitness[i] = CalculateFitness(X[i]);
+                fitness[i] = calculateFitness(x[i]);
                 if (fitness[i] < bestValue) {
                     bestValue = fitness[i];
                 }
@@ -136,8 +135,4 @@ public class GA {
         }
     }
 
-    public static void main(String args[]) {
-        GA ga = new GA();
-        ga.geneticAlgo();
-    }
 }

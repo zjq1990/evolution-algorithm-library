@@ -21,20 +21,22 @@ public class PSO {
     private static final double VMAX = 0.1 * (XMAX - XMIN); // 最大限制速度
     private static double VMIN = -VMAX;
 
-    private static double[][] pbest = new double[POPSIZE][DIMENSION]; // 个体最优
-    private static double[] gbest = new double[DIMENSION]; // 种群最优
-    private static double[] fitness = new double[POPSIZE];
+    private double[][] pbest = new double[POPSIZE][DIMENSION]; // 个体最优
+    private double[] gbest = new double[DIMENSION]; // 种群最优
+    private double[] fitness = new double[POPSIZE];
 
+    public double bestValue; //全局最优解
+    public double[] bestIndividual = new double[DIMENSION];//全局最优个体
 
-    // initialization
-    private static void init() {
+    // 初始化
+    private void init() {
         for (int i = 0; i < POPSIZE; i++) {
             for (int j = 0; j < DIMENSION; j++) {
                 X[i][j] = (XMAX - XMIN) * rand() + XMIN; // Initialize Position
                 V[i][j] = 0; // Initialize Velocity
             }
             // Evaluation
-            fitness[i] = calFitness(X[i]);
+            fitness[i] = calculateFitness(X[i]);
             // Local best
             pbest[i] = X[i];
         }
@@ -43,8 +45,8 @@ public class PSO {
         gbest = X[sortedIndex[0]];
     }
 
-    // update location
-    private static void updateX() {
+    // 位置更新
+    private void updateX() {
         for (int i = 0; i < POPSIZE; i++) {
             for (int j = 0; j < DIMENSION; j++) {
                 X[i][j] = X[i][j] + V[i][j];
@@ -55,7 +57,7 @@ public class PSO {
                 }
             }
             //Update personal best
-            double newFitness = calFitness(X[i]);
+            double newFitness = calculateFitness(X[i]);
             if (newFitness < fitness[i]) {
                 pbest[i] = X[i];
             }
@@ -67,8 +69,8 @@ public class PSO {
         gbest = X[sortedIndex[0]];
     }
 
-    // update speed
-    private static void updateV() {
+    // 速度更新
+    private void updateV() {
         Random random = new Random();
         for (int i = 0; i < POPSIZE; i++) {
             for (int j = 0; j < DIMENSION; j++) {
@@ -84,24 +86,27 @@ public class PSO {
         }
     }
 
-    // calculate fitness
-    private static double calFitness(double[] x) {
+    // 适应值
+    private double calculateFitness(double[] x) {
         return Fitness.deJong(x);
     }
 
 
-    // main function
-    public static void psoMain() {
+    // 主函数
+    public void evolve() {
         int gen = 0;
         init();
         while (gen < GENMAX) {
             updateV();
             updateX();
 
-            System.out.println("第" + gen + "代：" + calFitness(gbest));
+            System.out.println("第" + gen + "代：" + calculateFitness(gbest));
             gen++;
             W = W * Wdamp;
         }
+
+        bestIndividual = gbest;
+        bestValue = calculateFitness(gbest);
     }
 
     //获得升序排序后的索引值
@@ -125,10 +130,4 @@ public class PSO {
         return Math.random();
     }
 
-
-    public static void main(String[] args) {
-        PSO.psoMain();
-        System.out.println(Arrays.toString(PSO.gbest));
-        System.out.println(calFitness(PSO.gbest));
-    }
 }
