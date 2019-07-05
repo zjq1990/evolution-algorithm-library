@@ -1,7 +1,7 @@
 package util;
 
-import com.sun.tools.javac.util.Pair;
 
+import com.sun.tools.javac.util.Pair;
 
 /**
  * Created by zhouyi on 4/21/16.

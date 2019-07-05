@@ -1,3 +1,4 @@
+import algorithm.ABC;
 import algorithm.DE;
 import algorithm.GA;
 import algorithm.PSO;
@@ -30,5 +31,11 @@ public class Test {
         pso.evolve();
         System.out.println(Arrays.toString(pso.bestIndividual));
         System.out.println(pso.bestValue);
+    }
+
+    @org.junit.Test
+    public void ABCTest(){
+        ABC abc = new ABC();
+        abc.evolve();
     }
 }
