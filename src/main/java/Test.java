@@ -1,7 +1,4 @@
-import algorithm.ABC;
-import algorithm.DE;
-import algorithm.GA;
-import algorithm.PSO;
+import algorithm.*;
 
 import java.util.Arrays;
 
@@ -37,5 +34,11 @@ public class Test {
     public void ABCTest(){
         ABC abc = new ABC();
         abc.evolve();
+    }
+
+    @org.junit.Test
+    public void FWATest(){
+        FWA fwa = new FWA();
+        fwa.evolve();
     }
 }

@@ -1,6 +1,7 @@
 package algorithm;
 
 
+import lombok.extern.slf4j.Slf4j;
 import util.RAND;
 
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.Random;
  * @author zhangjiaqi (jiaqi@shanshu.ai)
  * @date 2019/07/04
  **/
+@Slf4j
 public class ABC {
 
 
@@ -173,6 +175,7 @@ public class ABC {
             }
         }
 
-        System.out.println(Arrays.toString(bestIndividual) + "|" + bestValue);
+        log.info("目标最优解");
+        log.info(Arrays.toString(bestIndividual) + "|" + bestValue);
     }
 }
