@@ -3,6 +3,7 @@ package algorithm;
 
 import lombok.extern.slf4j.Slf4j;
 import util.RAND;
+import util.TestFunction;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +13,7 @@ import java.util.Random;
 /**
  * 烟花算法 Firework algorithm
  *
- * @author zhangjiaqi (jiaqi@shanshu.ai)
+ * @author zhangjiaqi
  * @date 2019/07/09
  **/
 @Slf4j
@@ -41,7 +42,7 @@ public class FWA {
     private int bestIndex = 0;
 
     private double calculateFitness(double[] x) {
-        return Fitness.deJong(x);
+        return TestFunction.deJong(x);
     }
 
     private void init() {

@@ -1,5 +1,7 @@
 package algorithm;
 
+import util.TestFunction;
+
 import java.util.Random;
 
 /**
@@ -105,7 +107,7 @@ public class DE {
 
     //计算适应值
     private double calculateFitness(double[] x) {
-        return Fitness.sixHump(x);
+        return TestFunction.sixHump(x);
     }
 
 

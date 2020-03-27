@@ -1,7 +1,7 @@
 package algorithm;
 
 /**
- * @author zhangjiaqi (jiaqi@shanshu.ai)
+ * @author zhangjiaqi
  * @date 2019/07/04
  **/
 public interface Algorithm {

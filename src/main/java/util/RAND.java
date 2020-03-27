@@ -3,17 +3,26 @@ package util;
 
 import java.util.Random;
 
-/**
- * @author zhangjiaqi (jiaqi@shanshu.ai)
- * @date 2019/07/04
- **/
+
 public class RAND {
 
+    /**
+     * 获取一个区间内的随机数
+     * @param lower 下界
+     * @param upper 上界
+     * @return
+     */
     public static double getDoubleRandomBetween(double lower, double upper) {
         Random rand = new Random();
         return rand.nextDouble() * (upper - lower) + lower;
     }
 
+    /**
+     * 获取n个非负随机整数，除了元素i
+     * @param i
+     * @param nPop
+     * @return
+     */
     public static int getIntRandomExcept(int i, int nPop) {
         if (i < 0) {
             System.out.println("i cannot be less than zero");
@@ -27,7 +36,8 @@ public class RAND {
     }
 
     /**
-     * 获取闭区间n个不同的随机整数[min, max]
+     * 获取闭区间n个不同的随机整数
+     * [min, max]
      **/
     public static int[] randomArray(int min, int max, int n) {
         int len = max - min + 1;

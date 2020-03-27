@@ -1,10 +1,9 @@
-package algorithm;
+package util;
 
 /**
- * Created by zhangjackie on 17/10/19.
- * benchmark test Functions
+ * several benchmark test Functions
  */
-public class Fitness {
+public class TestFunction {
 
     // De Jong function (Sphere model)
     // -5.12 <= xi <= 5.12

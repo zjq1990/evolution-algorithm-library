@@ -4,14 +4,13 @@ package util;
 import com.sun.tools.javac.util.Pair;
 
 /**
- * Created by zhouyi on 4/21/16.
  * 计算两个导航坐标之间的直线距离和夹角
  * https://tech.meituan.com/lucene-distance.html
  */
-public class Geo {
+public class GeoUtils {
     private static final double EARTH_RADIUS = 6371008.8;
 
-    public static double simpleIntDist(int latitude1, int longitude1, int latitude2, int longitude2) {
+    public static double simpleDistance(int latitude1, int longitude1, int latitude2, int longitude2) {
         double lat1 = latitude1 / 1000000.0;
         double lng1 = longitude1 / 1000000.0;
         double lat2 = latitude2 / 1000000.0;
@@ -24,7 +23,7 @@ public class Geo {
         return Math.sqrt(Lx * Lx + Ly * Ly); // 用平面的矩形对角距离公式计算总距离
     }
 
-    public static double simpleDoubleDist(double lat1, double lng1, double lat2, double lng2) {
+    public static double simpleDistance(double lat1, double lng1, double lat2, double lng2) {
         double dx = (lng1 - lng2); // 经度差值
         double dy = (lat1 - lat2); // 纬度差值
         double b = (lat1 + lat2) / 2.0; // 平均纬度

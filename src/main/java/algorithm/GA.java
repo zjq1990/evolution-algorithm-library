@@ -1,5 +1,7 @@
 package algorithm;
 
+import util.TestFunction;
+
 import java.util.Random;
 
 /**
@@ -9,7 +11,7 @@ import java.util.Random;
 public class GA {
 
     private double calculateFitness(double[] XTemp) {
-        return Fitness.rosenBrock(XTemp);
+        return TestFunction.rosenBrock(XTemp);
     }
 
     // 选择操作(轮盘赌选择可以遗传下一代的染色体)

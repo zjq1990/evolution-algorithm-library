@@ -3,6 +3,7 @@ package algorithm;
 
 import lombok.extern.slf4j.Slf4j;
 import util.RAND;
+import util.TestFunction;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -11,12 +12,11 @@ import java.util.Random;
 /**
  * Artifical bee Colony
  *
- * @author zhangjiaqi (jiaqi@shanshu.ai)
+ * @author zhangjiaqi
  * @date 2019/07/04
  **/
 @Slf4j
 public class ABC {
-
 
     private final static int nVar = 2;// number of decision variables
     private final static double varMin = -10; // decision variable lower bound
@@ -50,7 +50,7 @@ public class ABC {
     }
 
     private double calculateFitness(double[] x) {
-        return Fitness.deJong(x);
+        return TestFunction.deJong(x);
     }
 
 

@@ -1,6 +1,8 @@
 package algorithm;
 
 
+import util.TestFunction;
+
 import java.util.*;
 
 /**
@@ -88,7 +90,7 @@ public class PSO {
 
     // 适应值
     private double calculateFitness(double[] x) {
-        return Fitness.deJong(x);
+        return TestFunction.deJong(x);
     }
 
 
