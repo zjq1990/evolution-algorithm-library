@@ -10,7 +10,7 @@ public class RAND {
      * 获取一个区间内的随机数
      * @param lower 下界
      * @param upper 上界
-     * @return
+     * @return value = (lower, upper)
      */
     public static double getDoubleRandomBetween(double lower, double upper) {
         Random rand = new Random();
@@ -19,18 +19,14 @@ public class RAND {
 
     /**
      * 获取n个非负随机整数，除了元素i
-     * @param i
-     * @param nPop
-     * @return
      */
-    public static int getIntRandomExcept(int i, int nPop) {
-        if (i < 0) {
-            System.out.println("i cannot be less than zero");
-        }
+    public static int getIntRandomExcept(int i, int n) {
+        assert i < 0 : "i cannot be less than zero";
+
         Random rand = new Random();
         int k = -1;
         while (k != i) {
-            k = rand.nextInt(nPop);
+            k = rand.nextInt(n);
         }
         return k;
     }
