@@ -1,22 +1,15 @@
 package algorithm;
 
 
-import lombok.extern.slf4j.Slf4j;
 import util.RAND;
-import util.TestFunction;
 
-import java.util.Arrays;
 import java.util.Random;
 
 
 /**
- * Artifical bee Colony
- *
- * @author zhangjiaqi
- * @date 2019/07/04
+ * 蜂群算法 Artificial Bee Colony
  **/
-@Slf4j
-public class ABC {
+public class ABC implements IEvolutionAlgorithm {
 
     private final static int nVar = 2;// number of decision variables
     private final static double varMin = -10; // decision variable lower bound
@@ -28,13 +21,15 @@ public class ABC {
 
     private double[][] pop = new double[nPop][nVar];
     private double[] fitness = new double[nPop];
+    private int[] abandonmentCount = new int[nPop];
+
 
     public double bestValue = Double.MAX_VALUE; //全局最优解
     public double[] bestIndividual = new double[nVar];//全局最优个体
 
-    private int[] abandonmentCount = new int[nPop];
 
-    private void init() {
+    @Override
+    public void init() {
         for (int i = 0; i < nPop; i++) {
             for (int j = 0; j < nVar; j++) {
                 pop[i][j] = RAND.getDoubleRandomBetween(varMin, varMax);//rand.nextDouble() * (varMax - varMin) + varMin;
@@ -47,10 +42,6 @@ public class ABC {
             }
             abandonmentCount[i] = 1;
         }
-    }
-
-    private double calculateFitness(double[] x) {
-        return TestFunction.deJong(x);
     }
 
 
@@ -152,12 +143,12 @@ public class ABC {
         }
     }
 
+    @Override
     public void evolve() {
         init();
 
         int iteration = 0;
         while (iteration++ < maxIter) {
-            System.out.println("第" + iteration + "代：");
 
             recruitedBees();
 
@@ -165,17 +156,15 @@ public class ABC {
 
             scoutBees();
 
-            // update best solution ever found
+            // update the best solution ever found
             for (int i = 0; i < nPop; i++) {
                 if (fitness[i] < bestValue) {
                     bestValue = fitness[i];
                     bestIndividual = pop[i].clone();
-                    System.out.println(Arrays.toString(bestIndividual) + "|" + bestValue);
                 }
             }
+            System.out.println("第" + iteration + "代：" + bestValue);
         }
 
-        log.info("目标最优解");
-        log.info(Arrays.toString(bestIndividual) + "|" + bestValue);
     }
 }

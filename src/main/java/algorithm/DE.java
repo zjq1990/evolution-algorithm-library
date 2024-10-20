@@ -1,14 +1,12 @@
 package algorithm;
 
-import util.TestFunction;
 
 import java.util.Random;
 
 /**
- * Created by zhangjackie on 17/8/2.
- * 差分进化算法  Differential Evolution
+ * 差分进化算法  differential evolution
  */
-public class DE {
+public class DE implements IEvolutionAlgorithm {
     private static final int NP = 1000;// 种群规模
     private static final int size = 2;// 个体的长度
     private static final double xMin = -5;// 最小值
@@ -17,24 +15,25 @@ public class DE {
     private static final double CR = 0.8;// 杂交的控制参数
     private static final int maxCycle = 1000; //最大迭代次数
 
-    private double[][] X = new double[NP][size];// 个体
-    private double[][] XMutation = new double[NP][size];
-    private double[][] XCrossOver = new double[NP][size];
+    private double[][] x = new double[NP][size];// 个体
+    private double[][] xMutation = new double[NP][size];
+    private double[][] xCrossOver = new double[NP][size];
     private double[] fitness = new double[NP];// 适应值
     private double[] fitnessCrossOver = new double[NP];//经过变异交叉操作后适应值
 
-    public double bestValue; //全局最优解
+
+    public double bestValue = Double.MAX_VALUE; //全局最优解
     public double[] bestIndividual = new double[size];//全局最优个体
 
-    //初始化
-    private void init() {
+    @Override
+    public void init() {
         Random r = new Random();
         for (int i = 0; i < NP; i++) {
             for (int j = 0; j < size; j++) {
-                X[i][j] = xMin + r.nextDouble() * (xMax - xMin);
+                x[i][j] = xMin + r.nextDouble() * (xMax - xMin);
             }
 
-            fitness[i] = calculateFitness(X[i]);
+            fitness[i] = calculateFitness(x[i]);
         }
     }
 
@@ -50,12 +49,12 @@ public class DE {
                 r3 = r.nextInt(NP);
             }
             for (int j = 0; j < size; j++) {
-                XMutation[i][j] = X[r1][j] + F * (X[r2][j] - X[r3][j]);
+                xMutation[i][j] = x[r1][j] + F * (x[r2][j] - x[r3][j]);
                 //区域边界检查
-                if (XMutation[i][j] < xMin) {
-                    XMutation[i][j] = xMin;
-                } else if (XMutation[i][j] > xMax) {
-                    XMutation[i][j] = xMax;
+                if (xMutation[i][j] < xMin) {
+                    xMutation[i][j] = xMin;
+                } else if (xMutation[i][j] > xMax) {
+                    xMutation[i][j] = xMax;
                 }
             }
         }
@@ -84,9 +83,9 @@ public class DE {
             for (int j = 0; j < size; j++) {
                 double rTemp = r.nextDouble();
                 if (rTemp <= CR) {
-                    XCrossOver[i][j] = XMutation[i][j];
+                    xCrossOver[i][j] = xMutation[i][j];
                 } else {
-                    XCrossOver[i][j] = X[i][j];
+                    xCrossOver[i][j] = x[i][j];
                 }
             }
         }
@@ -95,22 +94,18 @@ public class DE {
     //选择操作
     private void selection() {
         for (int i = 0; i < NP; i++) {
-            fitnessCrossOver[i] = calculateFitness(XCrossOver[i]);
+            fitnessCrossOver[i] = calculateFitness(xCrossOver[i]);
             if (fitnessCrossOver[i] < fitness[i]) {
                 for (int j = 0; j < size; j++) {
-                    X[i][j] = XCrossOver[i][j];
+                    x[i][j] = xCrossOver[i][j];
                 }
                 fitness[i] = fitnessCrossOver[i];
             }
         }
     }
 
-    //计算适应值
-    private double calculateFitness(double[] x) {
-        return TestFunction.sixHump(x);
-    }
 
-
+    @Override
     public void evolve() {
         double[] bestValueGeneration = new double[maxCycle]; //每代最佳值
         double[][] bestIndividualGeneration = new double[maxCycle][size];// 每代最优个体
@@ -123,7 +118,7 @@ public class DE {
             for (int i = 0; i < NP; i++) {
                 if (bestValueGeneration[gen] < fitness[i]) {
                     bestValueGeneration[gen] = fitness[i];
-                    bestIndividualGeneration[gen] = X[i];
+                    bestIndividualGeneration[gen] = x[i];
                 }
             }
 

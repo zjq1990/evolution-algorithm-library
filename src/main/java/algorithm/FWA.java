@@ -1,29 +1,21 @@
 package algorithm;
 
 
-import lombok.extern.slf4j.Slf4j;
 import util.RAND;
-import util.TestFunction;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 /**
- * 烟花算法 Firework algorithm
- *
- * @author zhangjiaqi
- * @date 2019/07/09
+ * 烟花算法 firework algorithm
  **/
-@Slf4j
-public class FWA {
+public class FWA implements IEvolutionAlgorithm {
 
     private final static int nPop = 5;
     private final static int dim = 2;
-
     private final static double varMin = -10; // decision variable lower bound
-    private final static double varMax = 10; // decision variable uppper bound
+    private final static double varMax = 10; // decision variable upper bound
     private final static double a = 0.04;// spark lower bound
     private final static double b = 0.8;// spark upper bound
     private final static double epsilon = Double.MIN_VALUE;
@@ -37,18 +29,17 @@ public class FWA {
     private List<double[]> explosionSpark = new ArrayList<double[]>();
     private List<Double> explosionSparkFitness = new ArrayList<Double>();
 
-    private double bestValue = Double.MAX_VALUE; //全局最优解
-    private double[] bestIndividual = new double[dim];//全局最优个体
+
+    public double bestValue = Double.MAX_VALUE; //全局最优解
+    public double[] bestIndividual = new double[dim];//全局最优个体
     private int bestIndex = 0;
 
-    private double calculateFitness(double[] x) {
-        return TestFunction.deJong(x);
-    }
-
-    private void init() {
+    @Override
+    public void init() {
         for (int i = 0; i < nPop; i++) {
             for (int j = 0; j < dim; j++) {
-                fireworks[i][j] = RAND.getDoubleRandomBetween(varMin, varMax);//rand.nextDouble() * (varMax - varMin) + varMin;
+                fireworks[i][j] = RAND.getDoubleRandomBetween(varMin, varMax);
+                //rand.nextDouble() * (varMax - varMin) + varMin;
             }
 
             fitness[i] = calculateFitness(fireworks[i]);
@@ -56,7 +47,6 @@ public class FWA {
                 bestValue = fitness[i];
                 bestIndex = i;
                 bestIndividual = fireworks[i].clone();
-                log.info(Arrays.toString(bestIndividual) + "|" + bestValue);
             }
         }
     }
@@ -131,7 +121,6 @@ public class FWA {
                     bestValue = fitness;
                     bestIndividual = spark.clone();
                     bestIndex = index;
-                    log.info(Arrays.toString(bestIndividual) + "|" + bestValue);
                 }
                 count++;
             }
@@ -174,7 +163,6 @@ public class FWA {
                 bestValue = fitness;
                 bestIndividual = spark.clone();
                 bestIndex = index;
-                log.info(Arrays.toString(bestIndividual) + "|" + bestValue);
             }
         }
     }
@@ -272,13 +260,12 @@ public class FWA {
     }
 
 
+    @Override
     public void evolve() {
-
         init();
 
-        int iteration = 0;
-        while (iteration++ < maxIter) {
-            System.out.println("第" + iteration + "代：");
+        int k = 0;
+        while (k++ < maxIter) {
 
             explosionSpark();
 
@@ -305,10 +292,8 @@ public class FWA {
             explosionSpark = new ArrayList<double[]>();
             explosionSparkFitness = new ArrayList<Double>();
 
+            System.out.println("第" + k + "代： " + bestValue);
         }
-
-        log.info("目标最优解");
-        log.info(Arrays.toString(bestIndividual) + "|" + bestValue);
 
     }
 

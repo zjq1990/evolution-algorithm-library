@@ -1,15 +1,13 @@
 package algorithm;
 
 
-import util.TestFunction;
 
 import java.util.*;
 
 /**
- * Created by zhangjackie on 17/10/20.
  * 粒子群算法 Particle Swarm Optimization
  */
-public class PSO {
+public class PSO implements IEvolutionAlgorithm{
     // Control Parameters
     private static final int GENMAX = 1000;
     private static final int DIMENSION = 2;
@@ -30,8 +28,8 @@ public class PSO {
     public double bestValue; //全局最优解
     public double[] bestIndividual = new double[DIMENSION];//全局最优个体
 
-    // 初始化
-    private void init() {
+    @Override
+    public void init() {
         for (int i = 0; i < POPSIZE; i++) {
             for (int j = 0; j < DIMENSION; j++) {
                 X[i][j] = (XMAX - XMIN) * rand() + XMIN; // Initialize Position
@@ -88,13 +86,9 @@ public class PSO {
         }
     }
 
-    // 适应值
-    private double calculateFitness(double[] x) {
-        return TestFunction.deJong(x);
-    }
 
 
-    // 主函数
+    @Override
     public void evolve() {
         int gen = 0;
         init();

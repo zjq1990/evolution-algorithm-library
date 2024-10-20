@@ -1,18 +1,31 @@
 package algorithm;
 
-import util.TestFunction;
 
 import java.util.Random;
 
 /**
- * Created by zhangjackie on 17/7/14.
- * 连续数值的遗传算法
+ * 遗传算法 genetic algorithm
  */
-public class GA {
+public class GA implements IEvolutionAlgorithm{
 
-    private double calculateFitness(double[] XTemp) {
-        return TestFunction.rosenBrock(XTemp);
-    }
+    int NP = 20;//种群数量
+    int size = 10;//个体长度
+    //double CR = 0.5;// 交叉概率
+    int IterMax = 1000;// 最大迭代次数
+
+    // 最优值和最优解
+    public double bestValue = Double.MAX_VALUE;
+    public double[] bestIndividual;
+
+    double[][] x = new double[NP][size];
+    double[][]  xCrossover= new double[NP][size];
+    double[][] xMutation = new double[NP][size];
+    double[] fitness = new double[NP];
+
+    Random r = new Random();
+
+
+
 
     // 选择操作(轮盘赌选择可以遗传下一代的染色体)
     private int selection(double[][] X) {
@@ -72,23 +85,8 @@ public class GA {
         return child;
     }
 
-
-    //遗传算法主程序
-    public void evolve() {
-        int NP = 20;//种群数量
-        int size = 10;//个体长度
-        //double CR = 0.5;// 交叉概率
-        int IterMax = 1000;// 最大迭代次数
-
-        double[][] x = new double[NP][size];
-        double[][]  xCrossover= new double[NP][size];
-        double[][] xMutation = new double[NP][size];
-        double[] fitness = new double[NP];
-
-        Random r = new Random();
-
-        double bestValue = 10000;
-
+    @Override
+    public void init(){
         // 初始化种群： 实数编码方式（0，1）
         for (int i = 0; i < NP; i++) {
             for (int j = 0; j < size; j++) {
@@ -98,13 +96,18 @@ public class GA {
             if (fitness[i] < bestValue) {
                 bestValue = fitness[i];
             }
-
         }
+    }
+
+
+    @Override
+    public void evolve() {
+        init();
 
         // searching iteration
         int k = 0;
         int p1, p2 = 0;
-        while (k < IterMax) {
+        while (k <= IterMax) {
 
             for (int i = 0; i < NP; i = i + 2) {
                 // 选择
@@ -129,10 +132,11 @@ public class GA {
                 fitness[i] = calculateFitness(x[i]);
                 if (fitness[i] < bestValue) {
                     bestValue = fitness[i];
+                    bestIndividual = x[i];
                 }
             }
 
-            System.out.println(bestValue);
+            System.out.println("第" + k + "代： " + bestValue);
             k++;
         }
     }
