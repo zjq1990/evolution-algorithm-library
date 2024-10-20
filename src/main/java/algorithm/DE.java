@@ -133,5 +133,6 @@ public class DE implements IEvolutionAlgorithm {
         bestIndividual = bestIndividualGeneration[maxCycle - 1];
     }
 
+    
 
 }
